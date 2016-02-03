@@ -93,14 +93,20 @@ def similarity_search(word, words):
         if min_dist != 0:
             print "We can't find " + word + ' in the dictionary'
             print 'Are you looking for ' + words[closest]['word'] + '?'
+
         return closest
 
 def output_result(ind, words, d_matrix):
     length = len(words)
     results = []
+    word_len = len(words[ind]['word'])
+    if word_len >= 9:
+        threshhold = word_len / 3.0
+    else:
+        threshhold = 3.0
     for i in range(length):
         ed = d_matrix[ind][i]
-        if (ed < 3):
+        if (ed < threshhold):
             results.append({'edit_dist' : ed, 'item' : words[i]})
     sorted_results = sorted(results, key = operator.itemgetter('edit_dist'))
     for r in sorted_results:
