@@ -30,6 +30,8 @@ If you made a typo in your word, it's all right for the script to find the most 
 
 ```
 Enter the word: caramity
+We can't find caramity in the dictionary
+Are you looking for calamity?
 [0] calamity
 大灾难：disastrous event
 -----------------------------------
@@ -71,6 +73,8 @@ Enter the word: feckless
 
 ```
 Enter the word: caramity
+We can't find caramity in the dictionary
+Are you looking for calamity?
 [0] calamity
 大灾难：disastrous event
 -----------------------------------

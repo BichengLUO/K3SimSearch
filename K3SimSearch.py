@@ -90,6 +90,9 @@ def similarity_search(word, words):
             if (dist < min_dist):
                 closest = i
                 min_dist = dist
+        if min_dist != 0:
+            print "We can't find " + word + ' in the dictionary'
+            print 'Are you looking for ' + words[closest]['word'] + '?'
         return closest
 
 def output_result(ind, words, d_matrix):
