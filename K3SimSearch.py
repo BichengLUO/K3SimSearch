@@ -80,10 +80,17 @@ def similarity_search(word, words):
     length = len(words)
     match_list = [i for i in range(length) if levenshtein(words[i]['word'], word) < 2]
     if len(match_list) == 0:
-        print "Can't find the word!"
+        print "Can't find the word!  The script quited now..."
         return -1
     else:
-        return match_list[0]
+        min_dist = 999
+        closest = 0
+        for i in match_list:
+            dist = levenshtein(words[i]['word'], word)
+            if (dist < min_dist):
+                closest = i
+                min_dist = dist
+        return closest
 
 def output_result(ind, words, d_matrix):
     length = len(words)
