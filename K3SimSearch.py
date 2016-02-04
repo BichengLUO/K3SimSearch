@@ -124,7 +124,19 @@ def output_result(ind, words, d_matrix):
         print r['item']['meaning']
         print '-----------------------------------'
 
+def print_logo():
+    logo_string = '''
+  _  ___________  _           ____                      _
+ | |/ /___ / ___|(_)_ __ ___ / ___|  ___  __ _ _ __ ___| |__
+ | ' /  |_ \___ \| | '_ ` _ \\\\___ \ / _ \/ _` | '__/ __| '_ \\
+ | . \ ___) |__) | | | | | | |___) |  __/ (_| | | | (__| | | |
+ |_|\_\____/____/|_|_| |_| |_|____/ \___|\__,_|_|  \___|_| |_|
+                                         By Eagle, 2016/02/04
+    '''
+    print logo_string
+
 def main():
+    print_logo()
     words = load_dictionary()
     d_matrix = dist_matrix(words)
     while True:
