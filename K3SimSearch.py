@@ -21,12 +21,14 @@ def levenshtein(s1, s2):
     return previous_row[-1]
 
 def write_matrix_to_file(d_matrix):
+    print 'Start writeing matrix from local cache...'
     length = len(d_matrix)
     with open('d_matrix', 'w') as matrix_file:
         for i in range(length):
             for j in range(length - 1):
                 matrix_file.write(str(d_matrix[i][j]) + ' ')
             matrix_file.write(str(d_matrix[i][-1]) + '\n')
+    print 'Writing matrix done!'
 
 def read_matrix_from_file(length):
     d_matrix = [[0 for x in range(length)] for x in range(length)]
@@ -43,6 +45,7 @@ def read_matrix_from_file(length):
     return d_matrix
 
 def calc_matrix(words):
+    print 'Start calculating matrix from dictionary...'
     length = len(words)
     d_matrix = [[0 for x in range(length)] for x in range(length)]
     for i in range(length):
@@ -51,12 +54,14 @@ def calc_matrix(words):
             word_j = words[j]['word']
             edit_dist = levenshtein(word_i, word_j)
             d_matrix[i][j] = d_matrix[j][i] = edit_dist
+    print 'Calculation done!'
     return d_matrix
 
 def dist_matrix(words):
     if os.path.isfile('d_matrix'):
         d_matrix = read_matrix_from_file(len(words))
     else:
+        print "Can't locate the local cache file..."
         d_matrix = calc_matrix(words)
         write_matrix_to_file(d_matrix)
     print 'Matrix established!'
