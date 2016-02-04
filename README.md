@@ -19,6 +19,16 @@ Enter such word as `feckless` to find its definitions and similar words:
 
 ```
 Enter the word: feckless
+============= Visually Similar ===============
+
+feckless,  reckless
+
+Press Enter to show definitions...
+```
+After showing that, you have a chance to do an exercise to review these visually similar words and to press Enter to show their definitions.
+```
+Press Enter to show definitions...
+=============== Definitions ==================
 [0] feckless
 无成果的，没有价值的：having no worth；粗心不负责任的：careless
 -----------------------------------
@@ -62,6 +72,16 @@ Enter the word:
 
 ```
 Enter the word: feckless
+============= Visually Similar ===============
+
+feckless,  reckless
+
+Press Enter to show definitions...
+```
+显示了这个以后，你可以花几秒钟回忆一下这些视觉上相似的单词的意思分别是什么，然后按回车来显示他们的释义。如下面所示：
+```
+Press Enter to show definitions...
+=============== Definitions ==================
 [0] feckless
 无成果的，没有价值的：having no worth；粗心不负责任的：careless
 -----------------------------------

@@ -26,7 +26,7 @@ def write_matrix_to_file(d_matrix):
         for i in range(length):
             for j in range(length - 1):
                 matrix_file.write(str(d_matrix[i][j]) + ' ')
-            matrix_file.write(str(d_matrix[i][length - 1]) + '\n')
+            matrix_file.write(str(d_matrix[i][-1]) + '\n')
 
 def read_matrix_from_file(length):
     d_matrix = [[0 for x in range(length)] for x in range(length)]
@@ -111,6 +111,14 @@ def output_result(ind, words, d_matrix):
         if (ed < threshhold):
             results.append({'edit_dist' : ed, 'item' : words[i]})
     sorted_results = sorted(results, key = operator.itemgetter('edit_dist'))
+    print '============= Visually Similar ==============='
+    print ''
+    for i in range(len(sorted_results) - 1):
+        print sorted_results[i]['item']['word'] + ', ',
+    print sorted_results[-1]['item']['word']
+    print ''
+    raw_input("Press Enter to show definitions...")
+    print '=============== Definitions =================='
     for r in sorted_results:
         print '[' + str(r['edit_dist']) + '] ' + r['item']['word']
         print r['item']['meaning']
