@@ -1,8 +1,7 @@
+![K3SimSearch](./k3simsearch.png)
 K3SimSearch
 ==================
 [English](./README.md)
-
-![K3SimSearch](./k3simsearch.png)
 
 K3SimSearch是用来帮助查找和搜索外形相近（**不是释义相近**）的GRE单词的一段简单Python脚本。它可以作为GRE备考小工具，帮助你更好地记忆单词。
 
