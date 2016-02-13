@@ -21,19 +21,19 @@ def levenshtein(s1, s2):
     return previous_row[-1]
 
 def write_matrix_to_file(d_matrix):
-    print 'Start writeing matrix from local cache...'
+    print '[Info] Start writeing matrix from local cache...'
     length = len(d_matrix)
     with open('d_matrix', 'w') as matrix_file:
         for i in range(length):
             for j in range(length - 1):
                 matrix_file.write(str(d_matrix[i][j]) + ' ')
             matrix_file.write(str(d_matrix[i][-1]) + '\n')
-    print 'Writing matrix done!'
+    print '[Info] Writing matrix done!'
 
 def read_matrix_from_file(length):
     d_matrix = [[0 for x in range(length)] for x in range(length)]
     i = j = 0
-    print 'Start reading matrix from local cache...'
+    print '[Info] Start reading matrix from local cache...'
     with open('d_matrix', 'r') as matrix_file:
         for line in matrix_file:
             for word in line.split():
@@ -41,11 +41,11 @@ def read_matrix_from_file(length):
                 i = i + 1
             i = 0
             j = j + 1
-    print 'Reading matrix done!'
+    print '[Info] Reading matrix done!'
     return d_matrix
 
 def calc_matrix(words):
-    print 'Start calculating matrix from dictionary...'
+    print '[Info] Start calculating matrix from dictionary...'
     length = len(words)
     d_matrix = [[0 for x in range(length)] for x in range(length)]
     for i in range(length):
@@ -54,17 +54,17 @@ def calc_matrix(words):
             word_j = words[j]['word']
             edit_dist = levenshtein(word_i, word_j)
             d_matrix[i][j] = d_matrix[j][i] = edit_dist
-    print 'Calculation done!'
+    print '[Info] Calculation done!'
     return d_matrix
 
 def dist_matrix(words):
     if os.path.isfile('d_matrix'):
         d_matrix = read_matrix_from_file(len(words))
     else:
-        print "Can't locate the local cache file..."
+        print "[Error] Can't locate the local cache file..."
         d_matrix = calc_matrix(words)
         write_matrix_to_file(d_matrix)
-    print 'Matrix established!'
+    print '[Info] Matrix established!'
     return d_matrix
 
 def load_dictionary_gen(csvfile):
@@ -78,14 +78,14 @@ def load_dictionary():
         dictionary = load_dictionary_gen(csvfile)
         for word in dictionary:
             words.append(word)
-    print 'Dictionary loaded!'
+    print '[Info] Dictionary loaded!'
     return words
 
 def similarity_search(word, words):
     length = len(words)
     match_list = [i for i in range(length) if levenshtein(words[i]['word'], word) < 2]
     if len(match_list) == 0:
-        print "Can't find the word!  The script quited now..."
+        print "[Error] Can't find the word! The script quited now..."
         return -1
     else:
         min_dist = 999
@@ -96,8 +96,8 @@ def similarity_search(word, words):
                 closest = i
                 min_dist = dist
         if min_dist != 0:
-            print "We can't find " + word + ' in the dictionary'
-            print 'Are you looking for ' + words[closest]['word'] + '?'
+            print "[Error] We can't find " + word + ' in the dictionary'
+            print '[Info] Are you looking for ' + words[closest]['word'] + '?'
 
         return closest
 
