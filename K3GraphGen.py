@@ -59,14 +59,14 @@ def generate_gexf(words, d_matrix):
         gexf.write(mid)
         edge_id = 0
         for i in range(length):
-            word_len = len(words[i]['word'])
-            if word_len >= 9:
-                threshhold = word_len / 3.0
-            elif word_len <= 4:
-                threshhold = 2.0
-            else:
-                threshhold = 3.0
             for j in range(i + 1, length):
+                word_len = min(len(words[i]['word']), len(words[j]['word']))
+                if word_len >= 9:
+                    threshhold = word_len / 3.0
+                elif word_len <= 4:
+                    threshhold = 2.0
+                else:
+                    threshhold = 3.0
                 if (d_matrix[i][j] < threshhold):
                     gexf.write('            <edge id="' + str(edge_id) + '" source="' + str(i) + '" target="' + str(j) + '" />\n')
                     edge_id = edge_id + 1
