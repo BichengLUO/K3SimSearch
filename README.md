@@ -53,3 +53,11 @@ Are you looking for calamity?
 -----------------------------------
 ```
 The script will retrieve `calamity` as the word you're looking for.
+
+K3GraphGen
+------------
+`K3GraphGen.py` is a piece of script for generating [GEXF](https://gephi.org/gexf/format/) file of GRE words according to their visual similarity. In order to open GEXF, you should install Gephi. [Gephi](https://gephi.org/) is an open source tool for visualizing big graph and doing a lot of other things about graph.
+
+After importing GEXF file to Gephi, we can visualize the graph of words in different layouts. Furthermore, we also provided a GEPHI file (`k3.gephi`) which acts as the project file of Gephi to see the graph more clearly.
+
+![k3.gephi](./k3.gif)
