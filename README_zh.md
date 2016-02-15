@@ -52,3 +52,11 @@ calamity,  clarity
 Press Enter to show definitions...
 ```
 脚本在搜索不到`caramity`这个单词的同时，会返回一个最接近的单词`calamity`，并以这个单词作为你要查询的单词进行相似性搜索。
+
+K3GraphGen
+------------
+`K3GraphGen.py`是一段根据GRE单词之间的视觉的相近性来生成图格式（[GEXF](https://gephi.org/gexf/format/)）的Python脚本。需要安装[Gephi](https://gephi.org/) 来打开GEXF格式的文件。这个Gephi是一款开源的图可视化工具，它提供了很多与图相关的操作功能。
+
+将GEXF文件导入到Gephi当中以后，我们可以以不同的布局方式对这个图进行可视化预览。而且，为了方便更加简洁明了地浏览这个图，我们也提供了一个`k3.gephi`项目文件来帮助用户进行预览。
+
+![k3.gephi](./k3.gif)
