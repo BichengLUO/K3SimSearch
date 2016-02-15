@@ -11,10 +11,10 @@ K3SimSearch是用来帮助查找和搜索外形相近（**不是释义相近**�
 在`K3SimSearch.py`所在目录下的控制台输入`python K3SimSearch.py`来运行这段脚本。耐心等待数秒，编辑距离缓存加载完毕以后，你将看到如下控制台提示：
 
 ```
-Dictionary loaded!
-Start reading matrix from local cache...
-Reading matrix done!
-Matrix established!
+[Info] Dictionary loaded!
+[Info] Start reading matrix from local cache...
+[Info] Reading matrix done!
+[Info] Matrix established!
 Enter the word:
 ```
 
@@ -43,13 +43,12 @@ Press Enter to show definitions...
 
 ```
 Enter the word: caramity
-We can't find caramity in the dictionary
-Are you looking for calamity?
-[0] calamity
-大灾难：disastrous event
------------------------------------
-[2] clarity
-清晰，清楚：clear, lucidity; 清澈透明:easily seen through
------------------------------------
+[Error] We can't find caramity in the dictionary
+[Info] Are you looking for calamity?
+============= Visually Similar ===============
+
+calamity,  clarity
+
+Press Enter to show definitions...
 ```
 脚本在搜索不到`caramity`这个单词的同时，会返回一个最接近的单词`calamity`，并以这个单词作为你要查询的单词进行相似性搜索。

@@ -11,10 +11,10 @@ K3SimSearch is a simple Python script as a dictionary in which you can look up a
 After typing `python K3SimSearch.py` in the working directory in which `K3SimSearch.py` is located and waiting for several minutes for loading cache, you will get this in your console:
 
 ```
-Dictionary loaded!
-Start reading matrix from local cache...
-Reading matrix done!
-Matrix established!
+[Info] Dictionary loaded!
+[Info] Start reading matrix from local cache...
+[Info] Reading matrix done!
+[Info] Matrix established!
 Enter the word:
 ```
 
@@ -43,14 +43,13 @@ If you made a typo in your word, it's all right for the script to find the most 
 
 ```
 Enter the word: caramity
-We can't find caramity in the dictionary
-Are you looking for calamity?
-[0] calamity
-大灾难：disastrous event
------------------------------------
-[2] clarity
-清晰，清楚：clear, lucidity; 清澈透明:easily seen through
------------------------------------
+[Error] We can't find caramity in the dictionary
+[Info] Are you looking for calamity?
+============= Visually Similar ===============
+
+calamity,  clarity
+
+Press Enter to show definitions...
 ```
 The script will retrieve `calamity` as the word you're looking for.
 
