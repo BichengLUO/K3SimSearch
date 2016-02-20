@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/BichengLUO/K3SimSearch.svg?branch=master)](https://travis-ci.org/BichengLUO/K3SimSearch)
 # ![K3SimSearch](./k3simsearch.png) K3SimSearch
 
 [English](./README.md)
