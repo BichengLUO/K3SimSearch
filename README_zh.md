@@ -5,7 +5,7 @@
 
 K3SimSearch是用来帮助查找和搜索外形相近（**不是释义相近**）的GRE单词的一段简单Python脚本。它可以作为GRE备考小工具，帮助你更好地记忆单词。
 
-[![asciicast](https://asciinema.org/a/35666.png)](https://asciinema.org/a/35666)
+<a href="https://asciinema.org/a/35666" target="_blank"><img src="https://asciinema.org/a/35666.png" width="589"/></a>
 
 **示例**
 

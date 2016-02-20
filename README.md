@@ -5,7 +5,7 @@
 
 K3SimSearch is a simple Python script as a dictionary in which you can look up a GRE word and find its similar words (**not synonyms but visual similarity**). It works as a small tool for helping students to prepare for GRE.
 
-<a href="https://asciinema.org/a/35666" target="_blank"><img src="https://asciinema.org/a/35666.png" width="589"/></a>
+<a href="https://asciinema.org/a/36899" target="_blank"><img src="https://asciinema.org/a/36899.png" /></a>
 
 **Example**
 
