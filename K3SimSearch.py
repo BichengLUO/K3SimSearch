@@ -126,7 +126,7 @@ def output_result(ind, words, d_matrix):
     print '=============== Definitions =================='
     for r in sorted_results:
         print '[' + str(r['edit_dist']) + '] ' + r['item']['word']
-        print r['item']['meaning']
+        print r['item']['meaning'].decode('UTF-8')
         print '-----------------------------------'
 
 def print_logo():
