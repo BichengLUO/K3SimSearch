@@ -2,6 +2,7 @@
 import csv
 import operator
 import os.path
+import platform
 
 def levenshtein(s1, s2):
     if len(s1) < len(s2):
@@ -126,7 +127,10 @@ def output_result(ind, words, d_matrix):
     print '=============== Definitions =================='
     for r in sorted_results:
         print '[' + str(r['edit_dist']) + '] ' + r['item']['word']
-        print r['item']['meaning'].decode('UTF-8')
+        if platform.system() == 'Windows':
+            print r['item']['meaning'].decode('UTF-8')
+        else:
+            print r['item']['meaning']
         print '-----------------------------------'
 
 def print_logo():
