@@ -25,12 +25,11 @@ def levenshtein(s1, s2):
 def write_matrix_to_file(d_matrix):
     print '[Info] Start writing matrix from local cache...'
     length = len(d_matrix)
-    with open('d_matrix', 'w') as matrix_file:
+    with open('d_matrix', 'wb') as matrix_file:
         last = 0
         for i in range(length):
-            for j in range(length - 1):
-                matrix_file.write(str(d_matrix[i][j]) + ' ')
-            matrix_file.write(str(d_matrix[i][-1]) + '\n')
+            for j in range(length):
+                matrix_file.write(chr(d_matrix[i][j]))
             if i - last >= length / 20.0:
                 sys.stdout.write('#')
                 last = i
@@ -40,14 +39,11 @@ def read_matrix_from_file(length):
     d_matrix = [[0 for x in range(length)] for x in range(length)]
     i = j = 0
     print '[Info] Start reading matrix from local cache...'
-    with open('d_matrix', 'r') as matrix_file:
+    with open('d_matrix', 'rb') as matrix_file:
         last = 0
-        for line in matrix_file:
-            for word in line.split():
-                d_matrix[i][j] = int(word)
-                j = j + 1
-            j = 0
-            i = i + 1
+        for i in range(length):
+            for j in range(length):
+                d_matrix[i][j] = ord(matrix_file.read(1))
             if i - last >= length / 20.0:
                 sys.stdout.write('#')
                 last = i
