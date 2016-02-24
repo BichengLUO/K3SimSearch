@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import sys
 import csv
 import operator
 import os.path
@@ -22,40 +23,53 @@ def levenshtein(s1, s2):
     return previous_row[-1]
 
 def write_matrix_to_file(d_matrix):
-    print '[Info] Start writeing matrix from local cache...'
+    print '[Info] Start writing matrix from local cache...'
     length = len(d_matrix)
     with open('d_matrix', 'w') as matrix_file:
+        last = 0
         for i in range(length):
             for j in range(length - 1):
                 matrix_file.write(str(d_matrix[i][j]) + ' ')
             matrix_file.write(str(d_matrix[i][-1]) + '\n')
-    print '[Info] Writing matrix done!'
+            if i - last >= length / 20.0:
+                sys.stdout.write('#')
+                last = i
+    print '\n[Info] Writing matrix done!'
 
 def read_matrix_from_file(length):
     d_matrix = [[0 for x in range(length)] for x in range(length)]
     i = j = 0
     print '[Info] Start reading matrix from local cache...'
     with open('d_matrix', 'r') as matrix_file:
+        last = 0
         for line in matrix_file:
             for word in line.split():
                 d_matrix[i][j] = int(word)
-                i = i + 1
-            i = 0
-            j = j + 1
-    print '[Info] Reading matrix done!'
+                j = j + 1
+            j = 0
+            i = i + 1
+            if i - last >= length / 20.0:
+                sys.stdout.write('#')
+                last = i
+    print '\n[Info] Reading matrix done!'
     return d_matrix
 
 def calc_matrix(words):
     print '[Info] Start calculating matrix from dictionary...'
     length = len(words)
+    print '[Info] Total words count: ' + str(length)
     d_matrix = [[0 for x in range(length)] for x in range(length)]
+    last = 0
     for i in range(length):
         for j in range(i + 1, length):
             word_i = words[i]['word']
             word_j = words[j]['word']
             edit_dist = levenshtein(word_i, word_j)
             d_matrix[i][j] = d_matrix[j][i] = edit_dist
-    print '[Info] Calculation done!'
+        if i - last >= length / 20.0:
+            sys.stdout.write('#')
+            last = i
+    print '\n[Info] Calculation done!'
     return d_matrix
 
 def dist_matrix(words):
@@ -73,13 +87,13 @@ def load_dictionary_gen(csvfile):
     for row in csvreader:
         yield {key : value for key, value in row.iteritems()}
 
-def load_dictionary():
+def load_dictionary(name):
     words = []
-    with open('ZYNM3K.csv', 'rb') as csvfile:
+    with open(name, 'rb') as csvfile:
         dictionary = load_dictionary_gen(csvfile)
         for word in dictionary:
             words.append(word)
-    print '[Info] Dictionary loaded!'
+    print '[Info] ' + name + ' dictionary loaded!'
     return words
 
 def similarity_search(word, words):
@@ -133,6 +147,17 @@ def output_result(ind, words, d_matrix):
             print r['item']['meaning']
         print '-----------------------------------'
 
+def merge_words(words_1, words_2):
+    print '[Info] Start merging words...'
+    merged = {}
+    for item in words_1 + words_2:
+        if item['word'] in merged:
+            merged[item['word']].update(item)
+        else:
+            merged[item['word']] = item
+    print '[Info] Two dictionaries merged!'
+    return [val for (_, val) in merged.items()]
+
 def print_logo():
     logo_string = '''
   _  ___________  _           ____                      _
@@ -146,15 +171,15 @@ def print_logo():
 
 def main():
     print_logo()
-    words = load_dictionary()
+    words_3k = load_dictionary('ZYNM3K.csv')
+    words_hbs = load_dictionary('HBS.csv')
+    words = merge_words(words_hbs, words_3k)
     d_matrix = dist_matrix(words)
     while True:
         line = raw_input('Enter the word: ')
         ind = similarity_search(line, words)
         if ind != -1:
             output_result(ind, words, d_matrix)
-        else:
-            break
 
 if __name__ == '__main__':
     main()
