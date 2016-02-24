@@ -12,8 +12,12 @@ K3SimSearch is a simple Python script as a dictionary in which you can look up a
 After typing `python K3SimSearch.py` in the working directory in which `K3SimSearch.py` is located and waiting for several minutes for loading cache, you will get this in your console:
 
 ```
-[Info] Dictionary loaded!
+[Info] ZYNM3K.csv dictionary loaded!
+[Info] HBS.csv dictionary loaded!
+[Info] Start merging words...
+[Info] Two dictionaries merged!
 [Info] Start reading matrix from local cache...
+###################
 [Info] Reading matrix done!
 [Info] Matrix established!
 Enter the word:

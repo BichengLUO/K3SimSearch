@@ -12,8 +12,12 @@ K3SimSearch是用来帮助查找和搜索外形相近（**不是释义相近**�
 在`K3SimSearch.py`所在目录下的控制台输入`python K3SimSearch.py`来运行这段脚本。耐心等待数秒，编辑距离缓存加载完毕以后，你将看到如下控制台提示：
 
 ```
-[Info] Dictionary loaded!
+[Info] ZYNM3K.csv dictionary loaded!
+[Info] HBS.csv dictionary loaded!
+[Info] Start merging words...
+[Info] Two dictionaries merged!
 [Info] Start reading matrix from local cache...
+###################
 [Info] Reading matrix done!
 [Info] Matrix established!
 Enter the word:
