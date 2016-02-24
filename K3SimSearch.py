@@ -96,7 +96,7 @@ def similarity_search(word, words):
     length = len(words)
     match_list = [i for i in range(length) if levenshtein(words[i]['word'], word) < 2]
     if len(match_list) == 0:
-        print "[Error] Can't find the word! The script quited now..."
+        print "[Error] Sorry, can't find the word!"
         return -1
     else:
         min_dist = 999
