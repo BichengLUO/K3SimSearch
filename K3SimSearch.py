@@ -32,6 +32,7 @@ def write_matrix_to_file(d_matrix):
                 matrix_file.write(chr(d_matrix[i][j]))
             if i - last >= length / 20.0:
                 sys.stdout.write('#')
+                sys.stdout.flush()
                 last = i
     print '\n[Info] Writing matrix done!'
 
@@ -46,6 +47,7 @@ def read_matrix_from_file(length):
                 d_matrix[i][j] = ord(matrix_file.read(1))
             if i - last >= length / 20.0:
                 sys.stdout.write('#')
+                sys.stdout.flush()
                 last = i
     print '\n[Info] Reading matrix done!'
     return d_matrix
@@ -64,6 +66,7 @@ def calc_matrix(words):
             d_matrix[i][j] = d_matrix[j][i] = edit_dist
         if i - last >= length / 20.0:
             sys.stdout.write('#')
+            sys.stdout.flush()
             last = i
     print '\n[Info] Calculation done!'
     return d_matrix
