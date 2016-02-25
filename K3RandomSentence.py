@@ -77,31 +77,32 @@ def main():
     words_hbs = load_dictionary('HBS.csv')
     words = merge_words(words_hbs, words_3k)
     print_manual()
-    i = 1
-    w = 0
+    all_count = 0
+    wrong_count = 0
     while True:
         random_item = random.choice(words)
         word = random_item['word']
         resp = urllib2.urlopen('http://learnersdictionary.com/definition/' + word)
         html = resp.read()
-        result = re.search('vi_content">(.*?)</div', html)
+        result = re.findall('vi_content">(.*?)</div', html)
         if result:
-            sentence = result.group(1)
-            example = '(' + str(i) + ') ' + HTML_PS.unescape(remove_tags(sentence))
-            line = raw_input(example + '   (y/n/q):')
+            example = ''
+            for i in range(min(len(result), 3)):
+                example += '>> ' + HTML_PS.unescape(remove_tags(result[i])) + '\n'
+            line = raw_input(example + '\n   y/n/q? ')
             if line == 'n' or line == 'N':
-                print '\n' + word + ': ',
+                print '\n   ' + word
                 if platform.system() == 'Windows':
-                    print random_item['meaning'].decode('UTF-8')
+                    print '   ' + random_item['meaning'].decode('UTF-8')
                 else:
-                    print random_item['meaning']
-                w = w + 1
+                    print '   ' + random_item['meaning']
+                wrong_count += 1
             elif line in ['quit', 'q', 'QUIT', 'Q']:
                 print '---------------------------'
-                print 'You got a score of ' + str((i - 1 - w) * 100 / (i - 1)) + ' in this test!'
+                print 'You got a score of ' + str((all_count - wrong_count) * 100 / all_count) + ' in this test!'
                 print '[Info] The script is ending now'
                 break
-            i = i + 1
+            all_count += 1
             print '---------------------------'
 
 if __name__ == '__main__':
