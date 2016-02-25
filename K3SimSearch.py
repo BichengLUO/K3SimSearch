@@ -130,7 +130,7 @@ def output_result(ind, words, matrix_data):
     word_len = len(words[ind]['word'])
     if word_len >= 9:
         threshhold = word_len / 3.0
-    elif word_len <= 4:
+    elif word_len <= 5:
         threshhold = 2.0
     else:
         threshhold = 3.0
