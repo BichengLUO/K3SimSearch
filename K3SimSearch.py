@@ -40,15 +40,24 @@ def read_matrix_from_file(length):
     i = j = 0
     print '[Info] Start reading matrix from local cache...'
     with open('d_matrix', 'rb') as matrix_file:
+        matrix_bytes = matrix_file.read()
         last = 0
         for i in range(length):
             for j in range(length):
-                d_matrix[i][j] = ord(matrix_file.read(1))
+                d_matrix[i][j] = ord(matrix_bytes[i * length + j])
             if i - last >= length / 20.0:
                 sys.stdout.write('#')
                 last = i
     print '\n[Info] Reading matrix done!'
     return d_matrix
+
+def read_matrix_data_from_file(length):
+    matrix_bytes = []
+    print '[Info] Start reading matrix from local cache...'
+    with open('d_matrix', 'rb') as matrix_file:
+        matrix_bytes = matrix_file.read()
+    print '[Info] Reading matrix data done!'
+    return matrix_bytes
 
 def calc_matrix(words):
     print '[Info] Start calculating matrix from dictionary...'
@@ -70,13 +79,13 @@ def calc_matrix(words):
 
 def dist_matrix(words):
     if os.path.isfile('d_matrix'):
-        d_matrix = read_matrix_from_file(len(words))
+        matrix_data = read_matrix_data_from_file(len(words))
     else:
         print "[Error] Can't locate the local cache file..."
         d_matrix = calc_matrix(words)
         write_matrix_to_file(d_matrix)
     print '[Info] Matrix established!'
-    return d_matrix
+    return matrix_data
 
 def load_dictionary_gen(csvfile):
     csvreader = csv.DictReader(csvfile)
@@ -112,7 +121,7 @@ def similarity_search(word, words):
 
         return closest
 
-def output_result(ind, words, d_matrix):
+def output_result(ind, words, matrix_data):
     length = len(words)
     results = []
     word_len = len(words[ind]['word'])
@@ -123,7 +132,7 @@ def output_result(ind, words, d_matrix):
     else:
         threshhold = 3.0
     for i in range(length):
-        ed = d_matrix[ind][i]
+        ed = ord(matrix_data[ind * length + i])
         if (ed < threshhold):
             results.append({'edit_dist' : ed, 'item' : words[i]})
     sorted_results = sorted(results, key = operator.itemgetter('edit_dist'))
@@ -170,12 +179,15 @@ def main():
     words_3k = load_dictionary('ZYNM3K.csv')
     words_hbs = load_dictionary('HBS.csv')
     words = merge_words(words_hbs, words_3k)
-    d_matrix = dist_matrix(words)
+    matrix_data = dist_matrix(words)
     while True:
-        line = raw_input('Enter the word: ')
+        line = raw_input('Enter the word to search ("quit" to exit): ')
+        if line == 'quit':
+            print '[Info] The script is ending now'
+            break
         ind = similarity_search(line, words)
         if ind != -1:
-            output_result(ind, words, d_matrix)
+            output_result(ind, words, matrix_data)
 
 if __name__ == '__main__':
     main()
