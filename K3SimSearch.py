@@ -184,8 +184,8 @@ def main():
     words = merge_words(words_hbs, words_3k)
     matrix_data = dist_matrix(words)
     while True:
-        line = raw_input('Enter the word to search ("quit" to exit): ')
-        if line == 'quit':
+        line = raw_input('Enter the word to search ("q" to exit): ')
+        if line in ['quit', 'q', 'QUIT', 'Q']:
             print '[Info] The script is ending now'
             break
         ind = similarity_search(line, words)
