@@ -191,8 +191,14 @@ def search_online(word):
             print obj['message'][0]['means'][i]['part'],
             l = len(obj['message'][0]['means'][i]['means'])
             for j in range(l - 1):
-                print obj['message'][0]['means'][i]['means'][j] + ',',
-            print obj['message'][0]['means'][i]['means'][l - 1]
+                if platform.system() == 'Windows':
+                    print obj['message'][0]['means'][i]['means'][j] + ',',
+                else:
+                    print obj['message'][0]['means'][i]['means'][j].encode('UTF-8') + ',',
+            if platform.system() == 'Windows':
+                print obj['message'][0]['means'][i]['means'][l - 1]
+            else:
+                print obj['message'][0]['means'][i]['means'][l - 1].encode('UTF-8')
         print '-----------------------------------'
     else:
         print "Sorry, we still can't find it"
