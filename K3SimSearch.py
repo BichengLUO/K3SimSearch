@@ -4,6 +4,8 @@ import csv
 import operator
 import os.path
 import platform
+import urllib2
+import re
 
 def levenshtein(s1, s2):
     if len(s1) < len(s2):
@@ -177,6 +179,20 @@ def print_logo():
     '''
     print logo_string
 
+def search_online(word):
+    print 'Try finding ' + word + ' online...';
+    resp = urllib2.urlopen('http://learnersdictionary.com/definition/' + word)
+    html = resp.read()
+    result = re.findall('def_text">(.*?)</span', html)
+    if result:
+        print '-----------------------------------'
+        print word
+        for i in range(len(result)):
+            print '[' + str(i + 1) + '] ' + result[i]
+        print '-----------------------------------'
+    else:
+        print "Sorry, we still can't find it"
+
 def main():
     print_logo()
     words_3k = load_dictionary('ZYNM3K.csv')
@@ -189,7 +205,9 @@ def main():
             print '[Info] The script is ending now'
             break
         ind = similarity_search(line, words)
-        if ind != -1:
+        if ind == -1:
+            search_online(line)
+        else:
             output_result(ind, words, matrix_data)
 
 if __name__ == '__main__':

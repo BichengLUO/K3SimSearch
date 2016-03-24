@@ -19,7 +19,7 @@ K3SimSearch是用来帮助查找和搜索外形相近（**不是释义相近**�
 [Info] Start reading matrix from local cache...
 [Info] Reading matrix data done!
 [Info] Matrix established!
-Enter the word to search ("quit" to exit):
+Enter the word to search ("q" to exit):
 ```
 
 你可以查询任意一个单词，例如`feckless`：

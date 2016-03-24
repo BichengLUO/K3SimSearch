@@ -19,7 +19,7 @@ After typing `python K3SimSearch.py` in the working directory in which `K3SimSea
 [Info] Start reading matrix from local cache...
 [Info] Reading matrix data done!
 [Info] Matrix established!
-Enter the word to search ("quit" to exit):
+Enter the word to search ("q" to exit):
 ```
 
 Enter such word as `feckless` to find its definitions and similar words:
