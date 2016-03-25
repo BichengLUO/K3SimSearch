@@ -4,6 +4,7 @@ import csv
 import operator
 import os.path
 import platform
+import urllib
 import urllib2
 import json
 
@@ -181,8 +182,9 @@ def print_logo():
     print logo_string
 
 def search_online(word):
-    print 'Try finding ' + word + ' online...';
-    resp = urllib2.urlopen('http://www.iciba.com/index.php?c=search&a=suggestnew&s=' + word)
+    print 'Try finding ' + word + ' online...'
+    params = urllib.urlencode({'s': '|1{'.join(word.split())})
+    resp = urllib2.urlopen('http://www.iciba.com/index.php?c=search&a=suggestnew&%s' % params)
     obj = json.loads(resp.read())
     if obj['status'] == 1:
         print '-----------------------------------'
@@ -214,6 +216,8 @@ def main():
         if line in ['quit', 'q', 'QUIT', 'Q']:
             print '[Info] The script is ending now'
             break
+        if line == '':
+            continue
         ind = similarity_search(line, words)
         if ind == -1:
             search_online(line)
