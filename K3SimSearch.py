@@ -88,8 +88,8 @@ def dist_matrix(words):
         matrix_data = read_matrix_data_from_file(len(words))
     else:
         print "[Error] Can't locate the local cache file..."
-        d_matrix = calc_matrix(words)
-        write_matrix_to_file(d_matrix)
+        matrix_data = calc_matrix(words)
+        write_matrix_to_file(matrix_data)
     print '[Info] Matrix established!'
     return matrix_data
 
@@ -168,7 +168,7 @@ def merge_words(words_1, words_2):
         else:
             merged[item['word']] = item
     print '[Info] Two dictionaries merged!'
-    return [val for (_, val) in merged.items()]
+    return sorted([val for (_, val) in merged.items()], key = operator.itemgetter('word'))
 
 def print_logo():
     logo_string = '''
