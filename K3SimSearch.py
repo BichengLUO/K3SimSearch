@@ -39,6 +39,17 @@ def write_matrix_to_file(d_matrix):
                 last = i
     print '\n[Info] Writing matrix done!'
 
+def write_matrix_to_multiple_file(d_matrix):
+    print '[Info] Start writing matrix from local cache...'
+    unit = 4000
+    length = len(d_matrix)
+    for k in range(length // unit + 1):
+        with open('d_matrix' + str(k), 'wb') as matrix_file:
+            for i in range(k * unit, min((k + 1) * unit, length)):
+                for j in range(length):
+                    matrix_file.write(chr(d_matrix[i][j]))
+    print '\n[Info] Writing matrix done!'
+
 def read_matrix_from_file(length):
     d_matrix = [[0 for x in range(length)] for x in range(length)]
     i = j = 0
@@ -55,6 +66,16 @@ def read_matrix_from_file(length):
                 last = i
     print '\n[Info] Reading matrix done!'
     return d_matrix
+
+def read_matrix_data_from_multiple_file(length):
+    matrix_bytes = []
+    print '[Info] Start reading matrix from local cache...'
+    unit = 4000
+    for k in range(length // unit + 1):
+        with open('d_matrix' + str(k), 'rb') as matrix_file:
+            matrix_bytes.extend(matrix_file.read())
+    print '[Info] Reading matrix data done!'
+    return matrix_bytes
 
 def read_matrix_data_from_file(length):
     matrix_bytes = []
@@ -84,12 +105,12 @@ def calc_matrix(words):
     return d_matrix
 
 def dist_matrix(words):
-    if os.path.isfile('d_matrix'):
-        matrix_data = read_matrix_data_from_file(len(words))
+    if os.path.isfile('d_matrix0'):
+        matrix_data = read_matrix_data_from_multiple_file(len(words))
     else:
         print "[Error] Can't locate the local cache file..."
         matrix_data = calc_matrix(words)
-        write_matrix_to_file(matrix_data)
+        write_matrix_to_multiple_file(matrix_data)
     print '[Info] Matrix established!'
     return matrix_data
 
