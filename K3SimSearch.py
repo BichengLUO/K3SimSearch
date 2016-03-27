@@ -170,6 +170,17 @@ def merge_words(words_1, words_2):
     print '[Info] Two dictionaries merged!'
     return sorted([val for (_, val) in merged.items()], key = operator.itemgetter('word'))
 
+def merge_words3(words_1, words_2, words_3):
+    print '[Info] Start merging words...'
+    merged = {}
+    for item in words_1 + words_2 + words_3:
+        if item['word'] in merged:
+            merged[item['word']].update(item)
+        else:
+            merged[item['word']] = item
+    print '[Info] Three dictionaries merged!'
+    return sorted([val for (_, val) in merged.items()], key = operator.itemgetter('word'))
+
 def print_logo():
     logo_string = '''
   _  ___________  _           ____                      _
@@ -209,7 +220,8 @@ def main():
     print_logo()
     words_3k = load_dictionary('ZYNM3K.csv')
     words_hbs = load_dictionary('HBS.csv')
-    words = merge_words(words_hbs, words_3k)
+    words_econ = load_dictionary('ECON.csv')
+    words = merge_words3(words_econ, words_hbs, words_3k)
     matrix_data = dist_matrix(words)
     while True:
         line = raw_input('Enter the word to search ("q" to exit): ')
