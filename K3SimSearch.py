@@ -7,6 +7,9 @@ import platform
 import urllib
 import urllib2
 import json
+from datetime import datetime
+
+session_dir = 'sessions'
 
 def levenshtein(s1, s2):
     if len(s1) < len(s2):
@@ -179,6 +182,11 @@ def output_result(ind, words, matrix_data):
         else:
             print r['item']['meaning']
         print '-----------------------------------'
+        today = datetime.now().strftime('%Y-%m-%d.csv')
+        if not os.path.exists(session_dir):
+            os.makedirs(session_dir)
+        with open(session_dir + '/' + today, 'a') as today_file:
+            today_file.write(r['item']['word'] + ',"' + r['item']['meaning'].decode('UTF-8').encode('GBK') + '"\n')
 
 def merge_words(words_1, words_2):
     print '[Info] Start merging words...'
@@ -221,18 +229,23 @@ def search_online(word):
     if obj['status'] == 1:
         print '-----------------------------------'
         print word
+        all_definition = ''
         for i in range(len(obj['message'][0]['means'])):
-            print obj['message'][0]['means'][i]['part'],
+            definition = obj['message'][0]['means'][i]['part']
             l = len(obj['message'][0]['means'][i]['means'])
             for j in range(l - 1):
-                if platform.system() == 'Windows':
-                    print obj['message'][0]['means'][i]['means'][j] + ',',
-                else:
-                    print obj['message'][0]['means'][i]['means'][j].encode('UTF-8') + ',',
+                definition = obj['message'][0]['means'][i]['means'][j] + ', '
+            definition += obj['message'][0]['means'][i]['means'][l - 1]
             if platform.system() == 'Windows':
-                print obj['message'][0]['means'][i]['means'][l - 1]
+                print definition
             else:
-                print obj['message'][0]['means'][i]['means'][l - 1].encode('UTF-8')
+                print definition.encode('UTF-8')
+            all_definition += definition + ' '
+        today = datetime.now().strftime('%Y-%m-%d.csv')
+        if not os.path.exists(session_dir):
+            os.makedirs(session_dir)
+        with open(session_dir + '/' + today, 'a') as today_file:
+            today_file.write(word + ',"' + all_definition.encode('GBK') + '"\n')
         print '-----------------------------------'
     else:
         print "Sorry, we still can't find it"
