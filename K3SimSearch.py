@@ -228,7 +228,8 @@ def search_online(word):
     obj = json.loads(resp.read())
     if obj['status'] == 1:
         print '-----------------------------------'
-        print word
+        n_word = obj['message'][0]['key']
+        print n_word
         all_definition = ''
         for i in range(len(obj['message'][0]['means'])):
             definition = obj['message'][0]['means'][i]['part']
@@ -245,7 +246,7 @@ def search_online(word):
         if not os.path.exists(session_dir):
             os.makedirs(session_dir)
         with open(session_dir + '/' + today, 'a') as today_file:
-            today_file.write(word + ',"' + all_definition.encode('GBK') + '"\n')
+            today_file.write(n_word.encode('GBK') + ',"' + all_definition.encode('GBK') + '"\n')
         print '-----------------------------------'
     else:
         print "Sorry, we still can't find it"
