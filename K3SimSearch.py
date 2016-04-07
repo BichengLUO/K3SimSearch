@@ -171,13 +171,25 @@ def output_result(ind, words, matrix_data):
     sorted_results = sorted(results, key = operator.itemgetter('edit_dist'))
     print '============= Visually Similar ==============='
     print ''
-    for i in range(len(sorted_results)):
-        print Back.BLUE + Style.BRIGHT + sorted_results[i]['item']['word'] + Style.RESET_ALL + Back.RESET,
+    print Back.BLUE + Fore.YELLOW + Style.BRIGHT + ' ' + sorted_results[0]['item']['word'] + ' ' + Style.RESET_ALL,
+    for i in range(1, len(sorted_results)):
+        edit_dist = sorted_results[i]['edit_dist']
+        if edit_dist > 2:
+            print Back.CYAN + ' ' + sorted_results[i]['item']['word'] + ' ' + Style.RESET_ALL,
+        else:
+            print Back.BLUE + Style.BRIGHT + ' ' + sorted_results[i]['item']['word'] + ' ' + Style.RESET_ALL,
+    print ''
     print ''
     raw_input("Press Enter to show definitions...")
     print '=============== Definitions =================='
     for r in sorted_results:
-        print Back.BLUE + '[' + str(r['edit_dist']) + '] ' + Style.BRIGHT + r['item']['word'] + Style.RESET_ALL + Back.RESET
+        edit_dist = r['edit_dist']
+        if edit_dist == 0:
+            print Back.BLUE + Fore.YELLOW + ' [0] ' + Style.BRIGHT + r['item']['word'] + ' ' + Style.RESET_ALL
+        elif edit_dist > 2:
+            print Back.CYAN + ' [' + str(edit_dist) + '] ' + r['item']['word'] + ' ' + Style.RESET_ALL
+        else:
+            print Back.BLUE + ' [' + str(edit_dist) + '] ' + Style.BRIGHT + r['item']['word'] + ' ' + Style.RESET_ALL
         if platform.system() == 'Windows':
             print r['item']['meaning'].decode('UTF-8')
         else:
@@ -230,7 +242,7 @@ def search_online(word):
     if obj['status'] == 1:
         print '-----------------------------------'
         n_word = obj['message'][0]['key']
-        print Back.BLUE + Style.BRIGHT + n_word + Style.RESET_ALL + Back.RESET
+        print Back.BLUE + Style.BRIGHT + ' ' + n_word + ' ' + Style.RESET_ALL + Back.RESET
         all_definition = ''
         for i in range(len(obj['message'][0]['means'])):
             definition = obj['message'][0]['means'][i]['part']
@@ -261,7 +273,7 @@ def main():
     words = merge_words3(words_econ, words_hbs, words_3k)
     matrix_data = dist_matrix(words)
     while True:
-        line = raw_input(Back.GREEN + 'Enter the word to search ("q" to exit):' + Back.RESET + ' ')
+        line = raw_input(Back.GREEN + ' Enter the word to search ("q" to exit): ' + Back.RESET + ' ')
         if line in ['quit', 'q', 'QUIT', 'Q']:
             print '[Info] The script is ending now'
             break
