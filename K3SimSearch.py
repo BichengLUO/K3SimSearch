@@ -8,6 +8,8 @@ import urllib
 import urllib2
 import json
 from datetime import datetime
+from colorama import init
+from colorama import Fore, Back, Style
 
 session_dir = 'sessions'
 
@@ -111,7 +113,7 @@ def dist_matrix(words):
     if os.path.isfile('d_matrix0'):
         matrix_data = read_matrix_data_from_multiple_file(len(words))
     else:
-        print "[Error] Can't locate the local cache file..."
+        print Fore.RED + "[Error] Can't locate the local cache file..." + Fore.RESET
         matrix_data = calc_matrix(words)
         write_matrix_to_multiple_file(matrix_data)
     print '[Info] Matrix established!'
@@ -135,7 +137,7 @@ def similarity_search(word, words):
     length = len(words)
     match_list = [i for i in range(length) if levenshtein(words[i]['word'], word) < 2]
     if len(match_list) == 0:
-        print "[Error] Sorry, can't find the word!"
+        print Fore.RED + "[Error] Sorry, can't find the word!" + Fore.RESET
         return -1
     else:
         min_dist = 999
@@ -146,7 +148,7 @@ def similarity_search(word, words):
                 closest = i
                 min_dist = dist
         if min_dist != 0:
-            print "[Error] We can't find " + word + ' in the local dictionary'
+            print Fore.RED + "[Error] We can't find " + word + ' in the local dictionary'  + Fore.RESET
             search_online(word)
             print '[Info] Are you looking for ' + words[closest]['word'] + '?'
 
@@ -169,14 +171,13 @@ def output_result(ind, words, matrix_data):
     sorted_results = sorted(results, key = operator.itemgetter('edit_dist'))
     print '============= Visually Similar ==============='
     print ''
-    for i in range(len(sorted_results) - 1):
-        print sorted_results[i]['item']['word'] + ', ',
-    print sorted_results[-1]['item']['word']
+    for i in range(len(sorted_results)):
+        print Back.BLUE + Style.BRIGHT + sorted_results[i]['item']['word'] + Style.RESET_ALL + Back.RESET,
     print ''
     raw_input("Press Enter to show definitions...")
     print '=============== Definitions =================='
     for r in sorted_results:
-        print '[' + str(r['edit_dist']) + '] ' + r['item']['word']
+        print Back.BLUE + '[' + str(r['edit_dist']) + '] ' + Style.BRIGHT + r['item']['word'] + Style.RESET_ALL + Back.RESET
         if platform.system() == 'Windows':
             print r['item']['meaning'].decode('UTF-8')
         else:
@@ -219,7 +220,7 @@ def print_logo():
  |_|\_\____/____/|_|_| |_| |_|____/ \___|\__,_|_|  \___|_| |_|
                                          By Eagle, 2016/02/04
     '''
-    print logo_string
+    print Fore.CYAN + logo_string + Fore.RESET
 
 def search_online(word):
     print 'Try finding ' + word + ' online...'
@@ -229,7 +230,7 @@ def search_online(word):
     if obj['status'] == 1:
         print '-----------------------------------'
         n_word = obj['message'][0]['key']
-        print n_word
+        print Back.BLUE + Style.BRIGHT + n_word + Style.RESET_ALL + Back.RESET
         all_definition = ''
         for i in range(len(obj['message'][0]['means'])):
             definition = obj['message'][0]['means'][i]['part']
@@ -252,6 +253,7 @@ def search_online(word):
         print "Sorry, we still can't find it"
 
 def main():
+    init()
     print_logo()
     words_3k = load_dictionary('ZYNM3K.csv')
     words_hbs = load_dictionary('HBS.csv')
@@ -259,7 +261,7 @@ def main():
     words = merge_words3(words_econ, words_hbs, words_3k)
     matrix_data = dist_matrix(words)
     while True:
-        line = raw_input('Enter the word to search ("q" to exit): ')
+        line = raw_input(Back.GREEN + 'Enter the word to search ("q" to exit):' + Back.RESET + ' ')
         if line in ['quit', 'q', 'QUIT', 'Q']:
             print '[Info] The script is ending now'
             break
