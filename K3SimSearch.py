@@ -12,6 +12,7 @@ from colorama import init
 from colorama import Fore, Back, Style
 
 session_dir = 'sessions'
+no_session = False
 
 def levenshtein(s1, s2):
     if len(s1) < len(s2):
@@ -31,7 +32,7 @@ def levenshtein(s1, s2):
     return previous_row[-1]
 
 def write_matrix_to_file(d_matrix):
-    print '[Info] Start writing matrix from local cache...'
+    print Fore.CYAN + '[Info]' + Fore.RESET + ' Start writing matrix from local cache...'
     length = len(d_matrix)
     with open('d_matrix', 'wb') as matrix_file:
         last = 0
@@ -42,10 +43,10 @@ def write_matrix_to_file(d_matrix):
                 sys.stdout.write('#')
                 sys.stdout.flush()
                 last = i
-    print '\n[Info] Writing matrix done!'
+    print '\n' + Fore.CYAN + '[Info]' + Fore.RESET + ' Writing matrix done!'
 
 def write_matrix_to_multiple_file(d_matrix):
-    print '[Info] Start writing matrix from local cache...'
+    print Fore.CYAN + '[Info]' + Fore.RESET + ' Start writing matrix from local cache...'
     unit = 4000
     length = len(d_matrix)
     for k in range(length // unit + 1):
@@ -53,12 +54,12 @@ def write_matrix_to_multiple_file(d_matrix):
             for i in range(k * unit, min((k + 1) * unit, length)):
                 for j in range(length):
                     matrix_file.write(chr(d_matrix[i][j]))
-    print '\n[Info] Writing matrix done!'
+    print '\n' + Fore.CYAN + '[Info]' + Fore.RESET + ' Writing matrix done!'
 
 def read_matrix_from_file(length):
     d_matrix = [[0 for x in range(length)] for x in range(length)]
     i = j = 0
-    print '[Info] Start reading matrix from local cache...'
+    print Fore.CYAN + '[Info]' + Fore.RESET + ' Start reading matrix from local cache...'
     with open('d_matrix', 'rb') as matrix_file:
         matrix_bytes = matrix_file.read()
         last = 0
@@ -69,31 +70,31 @@ def read_matrix_from_file(length):
                 sys.stdout.write('#')
                 sys.stdout.flush()
                 last = i
-    print '\n[Info] Reading matrix done!'
+    print '\n' + Fore.CYAN + '[Info]' + Fore.RESET + 'Reading matrix done!'
     return d_matrix
 
 def read_matrix_data_from_multiple_file(length):
     matrix_bytes = []
-    print '[Info] Start reading matrix from local cache...'
+    print Fore.CYAN + '[Info]' + Fore.RESET + ' Start reading matrix from local cache...'
     unit = 4000
     for k in range(length // unit + 1):
         with open('d_matrix' + str(k), 'rb') as matrix_file:
             matrix_bytes.extend(matrix_file.read())
-    print '[Info] Reading matrix data done!'
+    print Fore.CYAN + '[Info]' + Fore.RESET + ' Reading matrix data done!'
     return matrix_bytes
 
 def read_matrix_data_from_file(length):
     matrix_bytes = []
-    print '[Info] Start reading matrix from local cache...'
+    print Fore.CYAN + '[Info]' + Fore.RESET + ' Start reading matrix from local cache...'
     with open('d_matrix', 'rb') as matrix_file:
         matrix_bytes = matrix_file.read()
-    print '[Info] Reading matrix data done!'
+    print Fore.CYAN + '[Info]' + Fore.RESET + ' Reading matrix data done!'
     return matrix_bytes
 
 def calc_matrix(words):
-    print '[Info] Start calculating matrix from dictionary...'
+    print Fore.CYAN + '[Info]' + Fore.RESET + ' Start calculating matrix from dictionary...'
     length = len(words)
-    print '[Info] Total words count: ' + str(length)
+    print Fore.CYAN + '[Info]' + Fore.RESET + ' Total words count: ' + str(length)
     d_matrix = [[0 for x in range(length)] for x in range(length)]
     last = 0
     for i in range(length):
@@ -106,7 +107,7 @@ def calc_matrix(words):
             sys.stdout.write('#')
             sys.stdout.flush()
             last = i
-    print '\n[Info] Calculation done!'
+    print '\n' + Fore.CYAN + '[Info]' + Fore.RESET + ' Calculation done!'
     return d_matrix
 
 def dist_matrix(words):
@@ -116,7 +117,7 @@ def dist_matrix(words):
         print Fore.RED + "[Error] Can't locate the local cache file..." + Fore.RESET
         matrix_data = calc_matrix(words)
         write_matrix_to_multiple_file(matrix_data)
-    print '[Info] Matrix established!'
+    print Fore.CYAN + '[Info]' + Fore.RESET + ' Matrix established!'
     return matrix_data
 
 def load_dictionary_gen(csvfile):
@@ -130,7 +131,7 @@ def load_dictionary(name):
         dictionary = load_dictionary_gen(csvfile)
         for word in dictionary:
             words.append(word)
-    print '[Info] ' + name + ' dictionary loaded!'
+    print Fore.CYAN + '[Info] ' + Fore.RESET + Back.CYAN + name + Back.RESET + ' dictionary loaded!'
     return words
 
 def similarity_search(word, words):
@@ -150,7 +151,7 @@ def similarity_search(word, words):
         if min_dist != 0:
             print Fore.RED + "[Error] We can't find " + word + ' in the local dictionary'  + Fore.RESET
             search_online(word)
-            print '[Info] Are you looking for ' + words[closest]['word'] + '?'
+            print Fore.CYAN + '[Info]' + Fore.RESET + ' Are you looking for ' + words[closest]['word'] + '?'
 
         return closest
 
@@ -195,32 +196,33 @@ def output_result(ind, words, matrix_data):
         else:
             print r['item']['meaning']
         print '-----------------------------------'
-        today = datetime.now().strftime('%Y-%m-%d.csv')
-        if not os.path.exists(session_dir):
-            os.makedirs(session_dir)
-        with open(session_dir + '/' + today, 'a') as today_file:
-            today_file.write(r['item']['word'] + ',"' + r['item']['meaning'].decode('UTF-8').encode('GBK') + '"\n')
+        if not no_session:
+            today = datetime.now().strftime('%Y-%m-%d.csv')
+            if not os.path.exists(session_dir):
+                os.makedirs(session_dir)
+            with open(session_dir + '/' + today, 'a') as today_file:
+                today_file.write(r['item']['word'] + ',"' + r['item']['meaning'].decode('UTF-8').encode('GBK') + '"\n')
 
 def merge_words(words_1, words_2):
-    print '[Info] Start merging words...'
+    print Fore.CYAN + '[Info]' + Fore.RESET + ' Start merging words...'
     merged = {}
     for item in words_1 + words_2:
         if item['word'] in merged:
             merged[item['word']].update(item)
         else:
             merged[item['word']] = item
-    print '[Info] Two dictionaries merged!'
+    print Fore.CYAN + '[Info]' + Fore.RESET + ' Two dictionaries merged!'
     return sorted([val for (_, val) in merged.items()], key = operator.itemgetter('word'))
 
 def merge_words3(words_1, words_2, words_3):
-    print '[Info] Start merging words...'
+    print Fore.CYAN + '[Info]' + Fore.RESET + ' Start merging words...'
     merged = {}
     for item in words_1 + words_2 + words_3:
         if item['word'] in merged:
             merged[item['word']].update(item)
         else:
             merged[item['word']] = item
-    print '[Info] Three dictionaries merged!'
+    print Fore.CYAN + '[Info]' + Fore.RESET + ' Three dictionaries merged!'
     return sorted([val for (_, val) in merged.items()], key = operator.itemgetter('word'))
 
 def print_logo():
@@ -255,16 +257,20 @@ def search_online(word):
             else:
                 print definition.encode('UTF-8')
             all_definition += definition + ' '
-        today = datetime.now().strftime('%Y-%m-%d.csv')
-        if not os.path.exists(session_dir):
-            os.makedirs(session_dir)
-        with open(session_dir + '/' + today, 'a') as today_file:
-            today_file.write(n_word.encode('GBK') + ',"' + all_definition.encode('GBK') + '"\n')
+        if not no_session:
+            today = datetime.now().strftime('%Y-%m-%d.csv')
+            if not os.path.exists(session_dir):
+                os.makedirs(session_dir)
+            with open(session_dir + '/' + today, 'a') as today_file:
+                today_file.write(n_word.encode('GBK') + ',"' + all_definition.encode('GBK') + '"\n')
         print '-----------------------------------'
     else:
         print "Sorry, we still can't find it"
 
 def main():
+    if len(sys.argv) > 1 and sys.argv[1] == '-no-session':
+        no_session = True
+        print Fore.CYAN + '[Info]' + Fore.RESET + ' no session mode'
     init()
     print_logo()
     words_3k = load_dictionary('ZYNM3K.csv')
@@ -275,7 +281,7 @@ def main():
     while True:
         line = raw_input(Back.GREEN + ' Enter the word to search ("q" to exit): ' + Back.RESET + ' ')
         if line in ['quit', 'q', 'QUIT', 'Q']:
-            print '[Info] The script is ending now'
+            print Fore.CYAN + '[Info]' + Fore.RESET + ' The script is ending now'
             break
         if line == '':
             continue
