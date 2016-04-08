@@ -268,10 +268,10 @@ def search_online(word):
         print "Sorry, we still can't find it"
 
 def main():
+    init()
     if len(sys.argv) > 1 and sys.argv[1] == '-no-session':
         no_session = True
         print Fore.CYAN + '[Info]' + Fore.RESET + ' no session mode'
-    init()
     print_logo()
     words_3k = load_dictionary('ZYNM3K.csv')
     words_hbs = load_dictionary('HBS.csv')
