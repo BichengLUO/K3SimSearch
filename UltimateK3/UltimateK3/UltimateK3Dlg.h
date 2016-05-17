@@ -18,6 +18,7 @@ public:
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV Ö§³Ö
 	vocb::dict dictionary;
+	vocb::freq frequency;
 	int current_page;
 	int current_row;
 	int current_col;
@@ -42,4 +43,5 @@ public:
 	void draw_string(Graphics* pMemGraphics, const wchar_t *str, int x, int y, int width, int height, int font_size, Brush *brush);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 };

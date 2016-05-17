@@ -65,6 +65,7 @@ BEGIN_MESSAGE_MAP(CUltimateK3Dlg, CDialogEx)
 	ON_WM_ERASEBKGND()
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONDOWN()
+	ON_WM_RBUTTONDOWN()
 END_MESSAGE_MAP()
 
 
@@ -154,6 +155,10 @@ void CUltimateK3Dlg::OnPaint()
 		SolidBrush brush_black(Color::Black);
 		SolidBrush brush_blue(Color::Blue);
 
+		SolidBrush brush_yellow(Color::Yellow);
+		SolidBrush brush_orange(Color::Orange);
+		SolidBrush brush_red(Color::Red);
+
 		Bitmap pMemBitmap(rect.Width(), rect.Height());
 		Graphics* pMemGraphics = Graphics::FromImage(&pMemBitmap);
 		pMemGraphics->SetSmoothingMode(SmoothingMode::SmoothingModeAntiAlias);
@@ -189,10 +194,33 @@ void CUltimateK3Dlg::OnPaint()
 		{
 			int row = i / 10;
 			int col = i % 10;
+			int word_id = current_page * 100 + i;
 			Brush *font_brush = &brush_black;
 
 			std::wstring w = dictionary[current_page * 100 + i].word;
 			std::wstring m = dictionary[current_page * 100 + i].meaning;
+			Brush *freq_brush = &brush_white;
+			if (frequency.find(word_id) != frequency.end())
+			{
+				switch (frequency[word_id])
+				{
+				case 1:
+					freq_brush = &brush_yellow;
+					break;
+				case 2:
+					freq_brush = &brush_orange;
+					break;
+				case 3:
+					freq_brush = &brush_red;
+					break;
+				default:
+					freq_brush = &brush_red;
+
+					break;
+				}
+			}
+			pMemGraphics->FillRectangle(freq_brush,
+				left_margin + col * cell_width, top_margin + row * cell_height, cell_width, cell_height);
 			if (row == current_row && col == current_col)
 			{
 				pMemGraphics->FillRectangle(&brush_blue,
@@ -296,6 +324,28 @@ void CUltimateK3Dlg::OnLButtonDown(UINT nFlags, CPoint point)
 		current_page = current_page - 1 < 0 ? 0 : current_page - 1;
 	else if (on_right)
 		current_page = (current_page + 1) * 100 >= dictionary.size() ? current_page : current_page + 1;
+	if (on_voc)
+	{
+		int word_id = current_page * 100 + current_row * 10 + current_col;
+		if (frequency.find(word_id) == frequency.end())
+			frequency.insert(std::make_pair(word_id, 1));
+		else
+			frequency[word_id]++;
+	}
 	Invalidate();
 	CDialogEx::OnLButtonDown(nFlags, point);
+}
+
+
+void CUltimateK3Dlg::OnRButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO:  在此添加消息处理程序代码和/或调用默认值
+	if (on_voc)
+	{
+		int word_id = current_page * 100 + current_row * 10 + current_col;
+		if (frequency.find(word_id) != frequency.end())
+			frequency.erase(word_id);
+	}
+	Invalidate();
+	CDialogEx::OnRButtonDown(nFlags, point);
 }

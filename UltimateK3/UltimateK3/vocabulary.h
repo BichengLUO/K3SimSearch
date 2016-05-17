@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 namespace vocb
 {
@@ -13,7 +14,7 @@ namespace vocb
 	} word;
 
 	typedef std::vector<word> dict;
-
+	typedef std::unordered_map<int, int> freq;
 	dict load_default_dictionary();
 }
 
