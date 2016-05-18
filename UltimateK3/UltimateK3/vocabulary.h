@@ -15,7 +15,10 @@ namespace vocb
 
 	typedef std::vector<word> dict;
 	typedef std::unordered_map<int, int> freq;
+
 	dict load_default_dictionary();
+	freq load_default_frequency();
+	void save_default_freq(const freq& f);
 }
 
 #endif

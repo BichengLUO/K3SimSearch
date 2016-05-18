@@ -31,4 +31,24 @@ namespace vocb
 		}
 		return dictionary;
 	}
+
+	freq load_default_frequency()
+	{
+		freq frequency;
+		if (PathFileExists(L"freq.log"))
+		{
+			std::ifstream freq_file("freq.log", std::ifstream::in);
+			int word_id, freq;
+			while (freq_file >> word_id >> freq)
+				frequency.insert(std::make_pair(word_id, freq));
+		}
+		return frequency;
+	}
+
+	void save_default_freq(const freq& f)
+	{
+		std::ofstream freq_file("freq.log", std::ofstream::out);
+		for (auto it = f.begin(); it != f.end(); it++)
+			freq_file << it->first << " " << it->second << " ";
+	}
 }

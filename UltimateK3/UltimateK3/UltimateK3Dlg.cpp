@@ -66,6 +66,7 @@ BEGIN_MESSAGE_MAP(CUltimateK3Dlg, CDialogEx)
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_RBUTTONDOWN()
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 
@@ -102,6 +103,7 @@ BOOL CUltimateK3Dlg::OnInitDialog()
 
 	// TODO:  在此添加额外的初始化代码
 	dictionary = vocb::load_default_dictionary();
+	frequency = vocb::load_default_frequency();
 	top_margin = 60;
 	left_margin = 60;
 	current_page = 0;
@@ -348,4 +350,12 @@ void CUltimateK3Dlg::OnRButtonDown(UINT nFlags, CPoint point)
 	}
 	Invalidate();
 	CDialogEx::OnRButtonDown(nFlags, point);
+}
+
+
+void CUltimateK3Dlg::OnClose()
+{
+	// TODO:  在此添加消息处理程序代码和/或调用默认值
+	vocb::save_default_freq(frequency);
+	CDialogEx::OnClose();
 }
