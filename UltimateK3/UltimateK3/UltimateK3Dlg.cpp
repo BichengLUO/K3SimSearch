@@ -217,12 +217,16 @@ void CUltimateK3Dlg::OnPaint()
 					break;
 				default:
 					freq_brush = &brush_red;
-
 					break;
 				}
+				pMemGraphics->FillRectangle(freq_brush,
+					left_margin + col * cell_width, top_margin + row * cell_height, cell_width, cell_height);
+				wchar_t freq_count[128];
+				wsprintf(freq_count, L"%d", frequency[word_id]);
+				draw_string(pMemGraphics, freq_count,
+					left_margin + col * cell_width, top_margin + (row + 1) * cell_height - 15, cell_width, 15,
+					9, &brush_white);
 			}
-			pMemGraphics->FillRectangle(freq_brush,
-				left_margin + col * cell_width, top_margin + row * cell_height, cell_width, cell_height);
 			if (row == current_row && col == current_col)
 			{
 				pMemGraphics->FillRectangle(&brush_blue,
@@ -233,7 +237,7 @@ void CUltimateK3Dlg::OnPaint()
 				if (current_row >= 5) m_y = 5;
 			}
 			int font_size = 11;
-			if (w.length() >= 14)
+			if (w.length() >= 12)
 				font_size = 9;
 			else if (w.length() >= 10)
 				font_size = 10;
