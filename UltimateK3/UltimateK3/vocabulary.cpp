@@ -3,6 +3,7 @@
 #include <fstream>
 #include <locale>
 #include <codecvt>
+#include <algorithm>
 
 namespace vocb
 {
@@ -29,6 +30,7 @@ namespace vocb
 				dictionary.push_back(word{w, m});
 			}
 		}
+		std::sort(dictionary.begin(), dictionary.end(), word_cmp);
 		return dictionary;
 	}
 
@@ -50,5 +52,14 @@ namespace vocb
 		std::ofstream freq_file("freq.log", std::ofstream::out);
 		for (auto it = f.begin(); it != f.end(); it++)
 			freq_file << it->first << " " << it->second << " ";
+	}
+
+	bool word_cmp(const word &i, const word &j)
+	{
+		std::wstring iw = i.word;
+		std::wstring jw = j.word;
+		std::reverse(iw.begin(), iw.end());
+		std::reverse(jw.begin(), jw.end());
+		return iw < jw;
 	}
 }

@@ -19,6 +19,7 @@ namespace vocb
 	dict load_default_dictionary();
 	freq load_default_frequency();
 	void save_default_freq(const freq& f);
+	bool word_cmp(const word &i, const word &j);
 }
 
 #endif
