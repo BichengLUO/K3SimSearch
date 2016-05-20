@@ -67,6 +67,7 @@ BEGIN_MESSAGE_MAP(CUltimateK3Dlg, CDialogEx)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_RBUTTONDOWN()
 	ON_WM_CLOSE()
+//	ON_BN_CLICKED(IDC_CHECK_SHOW_DEFINITIONS, &CUltimateK3Dlg::OnBnClickedCheckShowDefinitions)
 END_MESSAGE_MAP()
 
 
@@ -156,6 +157,7 @@ void CUltimateK3Dlg::OnPaint()
 		SolidBrush brush_gray(Color::Gray);
 		SolidBrush brush_black(Color::Black);
 		SolidBrush brush_blue(Color::Blue);
+		SolidBrush brush_back(Color::MakeARGB(255, 240, 240, 240));
 
 		SolidBrush brush_yellow(Color::Yellow);
 		SolidBrush brush_orange(Color::Orange);
@@ -166,7 +168,8 @@ void CUltimateK3Dlg::OnPaint()
 		Bitmap pMemBitmap(rect.Width(), rect.Height());
 		Graphics* pMemGraphics = Graphics::FromImage(&pMemBitmap);
 		pMemGraphics->SetSmoothingMode(SmoothingMode::SmoothingModeAntiAlias);
-		pMemGraphics->FillRectangle(&brush_white, 0, 0, rect.Width(), rect.Height());
+		pMemGraphics->FillRectangle(&brush_back, 0, 0, rect.Width(), rect.Height());
+		pMemGraphics->FillRectangle(&brush_white, 0, 0, rect.Width(), rect.Height() - 30);
 
 		CPaintDC dc(this);
 		Graphics graphics(dc.m_hDC);
@@ -193,7 +196,7 @@ void CUltimateK3Dlg::OnPaint()
 			15, &brush_black);
 		std::wstring current_w;
 		std::wstring current_m;
-		int m_y = rect.Height() - 40;
+		int m_y = rect.Height() - 50;
 		for (int i = 0; i < 100 && current_page * 100 + i < dictionary.size(); i++)
 		{
 			int row = i / 10;
@@ -261,7 +264,8 @@ void CUltimateK3Dlg::OnPaint()
 				left_margin + i * cell_width, top_margin + 10 * cell_height);
 		}
 
-		draw_string(pMemGraphics, current_m.c_str(),
+		if (((CButton*)GetDlgItem(IDC_CHECK_SHOW_DEFINITIONS))->GetCheck())
+			draw_string(pMemGraphics, current_m.c_str(),
 			(rect.Width() - 800) / 2.0, m_y, 800, 30,
 			10, &brush_gray);
 
@@ -323,7 +327,8 @@ void CUltimateK3Dlg::OnMouseMove(UINT nFlags, CPoint point)
 	CRect right_page_rec(rect.Width() - 40, (rect.Height() - 120) / 2.0, rect.Width(), (rect.Height() - 120) / 2.0 + 120);
 	on_left = left_page_rec.PtInRect(point);
 	on_right = right_page_rec.PtInRect(point);
-	Invalidate();
+	rect.bottom -= 30;
+	InvalidateRect(rect);
 	CDialogEx::OnMouseMove(nFlags, point);
 }
 
@@ -331,6 +336,8 @@ void CUltimateK3Dlg::OnMouseMove(UINT nFlags, CPoint point)
 void CUltimateK3Dlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO:  在此添加消息处理程序代码和/或调用默认值
+	CRect rect;
+	GetClientRect(&rect);
 	if (on_left)
 		current_page = current_page - 1 < 0 ? 0 : current_page - 1;
 	else if (on_right)
@@ -343,7 +350,8 @@ void CUltimateK3Dlg::OnLButtonDown(UINT nFlags, CPoint point)
 		else
 			frequency[word_id]++;
 	}
-	Invalidate();
+	rect.bottom -= 30;
+	InvalidateRect(rect);
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
 
@@ -351,13 +359,16 @@ void CUltimateK3Dlg::OnLButtonDown(UINT nFlags, CPoint point)
 void CUltimateK3Dlg::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO:  在此添加消息处理程序代码和/或调用默认值
+	CRect rect;
+	GetClientRect(&rect);
 	if (on_voc)
 	{
 		int word_id = current_page * 100 + current_row * 10 + current_col;
 		if (frequency.find(word_id) != frequency.end())
 			frequency.erase(word_id);
 	}
-	Invalidate();
+	rect.bottom -= 30;
+	InvalidateRect(rect);
 	CDialogEx::OnRButtonDown(nFlags, point);
 }
 
@@ -368,3 +379,4 @@ void CUltimateK3Dlg::OnClose()
 	vocb::save_default_freq(frequency);
 	CDialogEx::OnClose();
 }
+
