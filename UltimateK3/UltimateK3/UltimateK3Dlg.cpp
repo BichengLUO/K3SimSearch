@@ -159,12 +159,6 @@ void CUltimateK3Dlg::OnPaint()
 		SolidBrush brush_blue(Color::Blue);
 		SolidBrush brush_back(Color::MakeARGB(255, 240, 240, 240));
 
-		SolidBrush brush_yellow(Color::Yellow);
-		SolidBrush brush_orange(Color::Orange);
-		SolidBrush brush_pink(Color::Pink);
-		SolidBrush brush_purple(Color::Purple);
-		SolidBrush brush_red(Color::Red);
-
 		Bitmap pMemBitmap(rect.Width(), rect.Height());
 		Graphics* pMemGraphics = Graphics::FromImage(&pMemBitmap);
 		pMemGraphics->SetSmoothingMode(SmoothingMode::SmoothingModeAntiAlias);
@@ -206,34 +200,21 @@ void CUltimateK3Dlg::OnPaint()
 
 			std::wstring w = dictionary[current_page * 100 + i].word;
 			std::wstring m = dictionary[current_page * 100 + i].meaning;
-			Brush *freq_brush = &brush_white;
+			wchar_t *font_name = L"Microsoft Yahei";
 			if (frequency.find(word_id) != frequency.end())
 			{
-				switch (frequency[word_id])
-				{
-				case 1:
-					freq_brush = &brush_pink;
-					break;
-				case 2:
-					freq_brush = &brush_yellow;
-					break;
-				case 3:
-					freq_brush = &brush_orange;
-					break;
-				case 4:
-					freq_brush = &brush_purple;
-					break;
-				default:
-					freq_brush = &brush_red;
-					break;
-				}
-				pMemGraphics->FillRectangle(freq_brush,
+				int freq = frequency[word_id];
+				freq = freq > 20 ? 20 : freq;
+				SolidBrush freq_brush(Color::MakeARGB(255, 250, 255 - freq * 6, 255 - freq * 12));
+				pMemGraphics->FillRectangle(&freq_brush,
 					left_margin + col * cell_width, top_margin + row * cell_height, cell_width, cell_height);
 				wchar_t freq_count[128];
 				wsprintf(freq_count, L"%d", frequency[word_id]);
+				SolidBrush inv_freq_brush(Color::MakeARGB(255, 5, freq * 6, freq * 12));
+				font_name = L"Arial Black";
 				draw_string(pMemGraphics, freq_count,
 					left_margin + col * cell_width, top_margin + (row + 1) * cell_height - 15, cell_width, 15,
-					9, &brush_white);
+					9, &inv_freq_brush, font_name);
 			}
 			if (row == current_row && col == current_col)
 			{
@@ -253,7 +234,7 @@ void CUltimateK3Dlg::OnPaint()
 				font_size = 12;
 			draw_string(pMemGraphics, w.c_str(),
 				left_margin + col * cell_width, 15 + top_margin + row * cell_height, cell_width, cell_height - 15,
-				font_size, font_brush);
+				font_size, font_brush, font_name);
 		}
 
 		for (int i = 0; i < 11; i++)
@@ -274,10 +255,12 @@ void CUltimateK3Dlg::OnPaint()
 	}
 }
 
-void CUltimateK3Dlg::draw_string(Graphics* pMemGraphics, const wchar_t *str, int x, int y, int width, int height, int font_size, Brush *brush)
+void CUltimateK3Dlg::draw_string(Graphics* pMemGraphics, const wchar_t *str,
+	int x, int y, int width, int height,
+	int font_size, Brush *brush, const wchar_t *font_name)
 {
 	// Initialize arguments.
-	Gdiplus::Font myFont(L"Microsoft Yahei", font_size);
+	Gdiplus::Font myFont(font_name, font_size);
 	StringFormat format;
 	format.SetAlignment(StringAlignmentCenter);
 
