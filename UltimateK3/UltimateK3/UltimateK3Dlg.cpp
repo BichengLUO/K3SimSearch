@@ -159,6 +159,8 @@ void CUltimateK3Dlg::OnPaint()
 
 		SolidBrush brush_yellow(Color::Yellow);
 		SolidBrush brush_orange(Color::Orange);
+		SolidBrush brush_pink(Color::Pink);
+		SolidBrush brush_purple(Color::Purple);
 		SolidBrush brush_red(Color::Red);
 
 		Bitmap pMemBitmap(rect.Width(), rect.Height());
@@ -207,13 +209,16 @@ void CUltimateK3Dlg::OnPaint()
 				switch (frequency[word_id])
 				{
 				case 1:
-					freq_brush = &brush_yellow;
+					freq_brush = &brush_pink;
 					break;
 				case 2:
-					freq_brush = &brush_orange;
+					freq_brush = &brush_yellow;
 					break;
 				case 3:
-					freq_brush = &brush_red;
+					freq_brush = &brush_orange;
+					break;
+				case 4:
+					freq_brush = &brush_purple;
 					break;
 				default:
 					freq_brush = &brush_red;
