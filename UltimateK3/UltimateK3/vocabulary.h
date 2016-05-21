@@ -20,6 +20,9 @@ namespace vocb
 	freq load_default_frequency();
 	void save_default_freq(const freq& f);
 	bool word_cmp(const word &i, const word &j);
+
+	int load_default_page_no();
+	void save_default_page_no(int page_no);
 }
 
 #endif

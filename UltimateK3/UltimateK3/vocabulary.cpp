@@ -27,7 +27,7 @@ namespace vocb
 				std::wstring w = line.substr(0, comma);
 				std::wstring m = line.substr(comma + 1);
 				if (m[0] == L'"') m = m.substr(1, m.length() - 2);
-				dictionary.push_back(word{w, m});
+				dictionary.push_back(word{ w, m });
 			}
 		}
 		std::sort(dictionary.begin(), dictionary.end(), word_cmp);
@@ -61,5 +61,22 @@ namespace vocb
 		std::reverse(iw.begin(), iw.end());
 		std::reverse(jw.begin(), jw.end());
 		return iw < jw;
+	}
+
+	int load_default_page_no()
+	{
+		int page_no = 0;
+		if (PathFileExists(L"page_no.log"))
+		{
+			std::ifstream page_no_file("page_no.log", std::ifstream::in);
+			page_no_file >> page_no;
+		}
+		return page_no;
+	}
+
+	void save_default_page_no(int page_no)
+	{
+		std::ofstream page_no_file("page_no.log", std::ofstream::out);
+		page_no_file << page_no;
 	}
 }

@@ -105,9 +105,9 @@ BOOL CUltimateK3Dlg::OnInitDialog()
 	// TODO:  在此添加额外的初始化代码
 	dictionary = vocb::load_default_dictionary();
 	frequency = vocb::load_default_frequency();
+	current_page = vocb::load_default_page_no();
 	top_margin = 60;
 	left_margin = 60;
-	current_page = 0;
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -360,6 +360,7 @@ void CUltimateK3Dlg::OnClose()
 {
 	// TODO:  在此添加消息处理程序代码和/或调用默认值
 	vocb::save_default_freq(frequency);
+	vocb::save_default_page_no(current_page);
 	CDialogEx::OnClose();
 }
 
