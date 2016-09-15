@@ -334,6 +334,8 @@ void CUltimateK3Dlg::OnLButtonDown(UINT nFlags, CPoint point)
 			frequency[word_id]++;
 	}
 	rect.bottom -= 30;
+	vocb::save_default_freq(frequency);
+	vocb::save_default_page_no(current_page);
 	InvalidateRect(rect);
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
