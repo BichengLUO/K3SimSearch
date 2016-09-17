@@ -27,6 +27,8 @@ public:
 	bool on_voc;
 	bool on_left;
 	bool on_right;
+	double seconds;
+	int timer;
 
 // й╣ож
 protected:
@@ -48,4 +50,5 @@ public:
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnClose();
 //	afx_msg void OnBnClickedCheckShowDefinitions();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };

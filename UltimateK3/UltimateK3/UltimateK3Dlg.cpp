@@ -68,6 +68,7 @@ BEGIN_MESSAGE_MAP(CUltimateK3Dlg, CDialogEx)
 	ON_WM_RBUTTONDOWN()
 	ON_WM_CLOSE()
 //	ON_BN_CLICKED(IDC_CHECK_SHOW_DEFINITIONS, &CUltimateK3Dlg::OnBnClickedCheckShowDefinitions)
+ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -108,6 +109,11 @@ BOOL CUltimateK3Dlg::OnInitDialog()
 	current_page = vocb::load_default_page_no();
 	top_margin = 60;
 	left_margin = 60;
+
+	CProgressCtrl* progress = (CProgressCtrl*)GetDlgItem(IDC_PROGRESS_PAGE_TIME);
+	progress->SetRange(0, 30000);
+	seconds = 0;
+	timer = SetTimer(1, 10, NULL);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -325,6 +331,12 @@ void CUltimateK3Dlg::OnLButtonDown(UINT nFlags, CPoint point)
 		current_page = current_page - 1 < 0 ? 0 : current_page - 1;
 	else if (on_right)
 		current_page = (current_page + 1) * 100 >= dictionary.size() ? current_page : current_page + 1;
+	if (on_left || on_right)
+	{
+		KillTimer(timer);
+		seconds = 0;
+		timer = SetTimer(1, 10, NULL);
+	}
 	if (on_voc)
 	{
 		int word_id = current_page * 100 + current_row * 10 + current_col;
@@ -366,3 +378,19 @@ void CUltimateK3Dlg::OnClose()
 	CDialogEx::OnClose();
 }
 
+
+void CUltimateK3Dlg::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO:  在此添加消息处理程序代码和/或调用默认值
+	if (nIDEvent == timer)
+	{
+		seconds += 0.01;
+		if (seconds > 300.0)
+			seconds = 300.0;
+		CProgressCtrl* progress = (CProgressCtrl*)GetDlgItem(IDC_PROGRESS_PAGE_TIME);
+		int min, max;
+		progress->GetRange(min, max);
+		progress->SetPos(min + (max - min) * seconds / 300.0);
+	}
+	CDialogEx::OnTimer(nIDEvent);
+}
