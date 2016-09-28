@@ -23,6 +23,7 @@ namespace vocb
 
 	int load_default_page_no();
 	void save_default_page_no(int page_no);
+	void backup();
 }
 
 #endif

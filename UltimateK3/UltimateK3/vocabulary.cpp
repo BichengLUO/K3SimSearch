@@ -79,4 +79,10 @@ namespace vocb
 		std::ofstream page_no_file("page_no.log", std::ofstream::out);
 		page_no_file << page_no;
 	}
+
+	void backup()
+	{
+		CopyFile(_T("freq.log"), _T("freq.log.bak"), FALSE);
+		CopyFile(_T("page_no.log"), _T("page_no.log.bak"), FALSE);
+	}
 }

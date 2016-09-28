@@ -107,6 +107,7 @@ BOOL CUltimateK3Dlg::OnInitDialog()
 	dictionary = vocb::load_default_dictionary();
 	frequency = vocb::load_default_frequency();
 	current_page = vocb::load_default_page_no();
+	vocb::backup();
 	top_margin = 60;
 	left_margin = 60;
 
