@@ -44,7 +44,7 @@ public:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	void draw_string(Graphics* pMemGraphics, const wchar_t *str,
 		int x, int y, int width, int height,
-		int font_size, Brush *brush, const wchar_t *font_name = L"Microsoft Yahei");
+		int font_size, Brush *brush, const wchar_t *font_name = L"Times New Roman");
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);

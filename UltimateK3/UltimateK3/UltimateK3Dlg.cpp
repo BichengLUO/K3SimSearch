@@ -166,14 +166,17 @@ void CUltimateK3Dlg::OnPaint()
 		SolidBrush brush_blue(Color::Blue);
 		SolidBrush brush_back(Color::MakeARGB(255, 240, 240, 240));
 
+		double scale = 0.9;
+		rect.SetRect(0, 0, rect.Width() * scale, rect.Height() * scale);
 		Bitmap pMemBitmap(rect.Width(), rect.Height());
 		Graphics* pMemGraphics = Graphics::FromImage(&pMemBitmap);
-		pMemGraphics->SetSmoothingMode(SmoothingMode::SmoothingModeAntiAlias);
+		//pMemGraphics->SetSmoothingMode(SmoothingMode::SmoothingModeAntiAlias);
 		pMemGraphics->FillRectangle(&brush_back, 0, 0, rect.Width(), rect.Height());
 		pMemGraphics->FillRectangle(&brush_white, 0, 0, rect.Width(), rect.Height() - 30);
 
 		CPaintDC dc(this);
 		Graphics graphics(dc.m_hDC);
+		graphics.SetInterpolationMode(InterpolationMode::InterpolationModeNearestNeighbor);
 
 		int cell_height = (rect.Height() - 2 * top_margin) / 10.0;
 		int cell_width = (rect.Width() - 2 * left_margin) / 10.0;
@@ -185,16 +188,16 @@ void CUltimateK3Dlg::OnPaint()
 		pMemGraphics->FillEllipse(right_brush, rect.Width() - 40, (rect.Height() - 120) / 2.0, 80, 120);
 		draw_string(pMemGraphics, L"←",
 			0, (rect.Height() - 40) / 2.0 + 5, 40, 40,
-			15, &brush_white);
+			15 * scale, &brush_white);
 		draw_string(pMemGraphics, L"→",
 			rect.Width() - 40, (rect.Height() - 40) / 2.0 + 5, 40, 40,
-			15, &brush_white);
+			15 * scale, &brush_white);
 
 		wchar_t unit_title[128];
 		wsprintf(unit_title, L"List %d", current_page + 1);
 		draw_string(pMemGraphics, unit_title,
 			(rect.Width() - 300) / 2.0, 20, 300, 40,
-			15, &brush_black);
+			15 * scale, &brush_black);
 		std::wstring current_w;
 		std::wstring current_m;
 		int m_y = rect.Height() - 50;
@@ -207,7 +210,7 @@ void CUltimateK3Dlg::OnPaint()
 
 			std::wstring w = dictionary[current_page * 100 + i].word;
 			std::wstring m = dictionary[current_page * 100 + i].meaning;
-			wchar_t *font_name = L"Microsoft Yahei";
+			wchar_t *font_name = L"Times New Roman";
 			if (frequency.find(word_id) != frequency.end())
 			{
 				int freq = frequency[word_id];
@@ -218,10 +221,10 @@ void CUltimateK3Dlg::OnPaint()
 				wchar_t freq_count[128];
 				wsprintf(freq_count, L"%d", frequency[word_id]);
 				SolidBrush inv_freq_brush(Color::MakeARGB(255, 5, freq * 6, freq * 12));
-				font_name = L"Arial Black";
+				font_name = L"Times New Roman";
 				draw_string(pMemGraphics, freq_count,
 					left_margin + col * cell_width, top_margin + (row + 1) * cell_height - 15, cell_width, 15,
-					9, &inv_freq_brush, font_name);
+					9 * scale, &inv_freq_brush, font_name);
 			}
 			if (row == current_row && col == current_col)
 			{
@@ -232,15 +235,16 @@ void CUltimateK3Dlg::OnPaint()
 				current_m = m;
 				if (current_row >= 5) m_y = 5;
 			}
-			int font_size = 11;
+			int font_size = 14;
 			if (w.length() >= 12)
-				font_size = 9;
-			else if (w.length() >= 10)
-				font_size = 10;
-			else if (w.length() <= 5)
 				font_size = 12;
+			else if (w.length() >= 10)
+				font_size = 13;
+			else if (w.length() <= 5)
+				font_size = 15;
+			font_size *= scale;
 			draw_string(pMemGraphics, w.c_str(),
-				left_margin + col * cell_width, 15 + top_margin + row * cell_height, cell_width, cell_height - 15,
+				left_margin + col * cell_width, 15 * scale + top_margin + row * cell_height, cell_width, cell_height - 15 * scale,
 				font_size, font_brush, font_name);
 		}
 
@@ -255,10 +259,11 @@ void CUltimateK3Dlg::OnPaint()
 		if (((CButton*)GetDlgItem(IDC_CHECK_SHOW_DEFINITIONS))->GetCheck())
 			draw_string(pMemGraphics, current_m.c_str(),
 			(rect.Width() - 800) / 2.0, m_y, 800, 30,
-			10, &brush_gray);
+			10 * scale, &brush_gray);
 
 		delete pMemGraphics;
-		graphics.DrawImage(&pMemBitmap, 0, 0);
+		GetClientRect(&rect);
+		graphics.DrawImage(&pMemBitmap, 0, 0, rect.Width(), rect.Height());
 	}
 }
 
